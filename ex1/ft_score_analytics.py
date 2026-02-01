@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+""" Player Score Analytics: A script to analyze player scores
+provided as command-line arguments."""
 
 import sys
 

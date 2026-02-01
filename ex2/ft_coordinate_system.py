@@ -1,8 +1,17 @@
 #!/usr/bin/env python3
+""" Game Coordinate System: A script to handle 3D coordinates
+and calculate distances."""
 import math
 
 
 def calculate_dist(orign_point: tuple, position: tuple) -> float:
+    """Calculate the Euclidean distance between two 3D points.
+    Args:
+        orign_point (tuple): The origin point (x, y, z).
+        position (tuple): The target position (x, y, z).
+        Returns:
+            float: The Euclidean distance between the two points.
+    """
     x1 = position[0]
     x2 = orign_point[0]
 

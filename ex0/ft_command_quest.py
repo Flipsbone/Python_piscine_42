@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+""" Command Quest: A script to handle command-line arguments
+for a game quest."""
 
 import sys
 
