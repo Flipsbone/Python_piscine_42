@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
+""" Achievement Tracker System: A script to track player achievements
+and analyze them using set operations."""
 
 if __name__ == "__main__":
     print("=== Achievement Tracker System ===\n")
     alice = {'first_kill', 'level_10', 'treasure_hunter', 'speed_demon'}
-    bob = {'first_kill', 'level_10', 'boss_slayer', 'collector'}
-    charlie = {'level_10', 'treasure_hunter', 'boss_slayer', 'speed_demon',
-               'perfectionist'}
+
+    data_bob = ["first_kill", "level_10", "boss_slayer", "collector"]
+    bob = set(data_bob)
+
+    charlie = set()
+    charlie.update(["level_10", "treasure_hunter", "boss_slayer",
+                    "speed_demon", "perfectionist"])
 
     print(f"Player alice achievements: {alice}")
     print(f"Player bob achievements: {bob}")
