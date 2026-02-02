@@ -5,12 +5,20 @@ import sys
 
 
 def display_dictionary(inventory: dict) -> None:
+    """ Demonstrates dictionary properties.
+    Args:
+        inventory (dict): The inventory dictionary.
+    """
     print(f"Dictionary keys: {list(inventory.keys())}")
     print(f"Dictionary values: {list(inventory.values())}")
     print(f"Sample lookup - 'sword' in inventory: {'sword' in inventory} ")
 
 
 def management_suggestion(inventory: dict) -> None:
+    """ Suggests items that need restocking.
+    Args:
+        inventory (dict): The inventory dictionary.
+    """
     restock = []
     for item, qty in inventory.items():
         if qty < 2:
@@ -19,6 +27,10 @@ def management_suggestion(inventory: dict) -> None:
 
 
 def rarity_item(inventory: dict) -> None:
+    """ Categorizes items based on their quantity.
+    Args:
+        inventory (dict): The inventory dictionary.
+    """
     categories = {
         "Moderate": {},
         "Scarce": {},
@@ -29,10 +41,15 @@ def rarity_item(inventory: dict) -> None:
         else:
             categories["Scarce"][item] = qty
     print(f"Moderate: {categories['Moderate']}")
-    print(f"Moderate: {categories['Scarce']}")
+    print(f"Scarce: {categories['Scarce']}")
 
 
 def display_inventory(inventory: dict, total_item: int) -> None:
+    """ Displays the inventory sorted by quantity.
+    Args:
+        inventory (dict): The inventory dictionary.
+        total_item (int): Total number of items.
+    """
     temp_inventory = inventory.copy()
     while temp_inventory:
         current_max = max(temp_inventory, key=temp_inventory.get)
@@ -51,10 +68,22 @@ def display_inventory(inventory: dict, total_item: int) -> None:
 
 
 def count_total_item(inventory: dict) -> int:
+    """ Counts the total number of items in the inventory.
+    Args:
+        inventory (dict): The inventory dictionary.
+    Returns:
+        int: Total number of items.
+    """
     return sum(inventory.values())
 
 
 def fill_out_inventory(inventory: dict) -> dict:
+    """ Fills out the inventory from command-line arguments.
+    Args:
+        inventory (dict): The inventory dictionary.
+    Returns:
+        dict: Updated inventory dictionary.
+    """
     for arg in sys.argv[1:]:
         key = ""
         value_str = ""
