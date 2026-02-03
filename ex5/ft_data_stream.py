@@ -6,6 +6,57 @@ import time
 from typing import Generator
 
 
+def ft_prime(limit: int) -> Generator[int, None, None]:
+    count = 0
+    nb = 2
+    div = 2
+
+    while count < limit:
+        div = 2
+        is_prime = True
+        while div <= nb / div:
+            if nb % div == 0:
+                is_prime = False
+            div += 1
+        if is_prime:
+            yield nb
+            count += 1
+        nb += 1
+
+
+def display_prime(limit: int) -> None:
+    prime_gen = ft_prime(limit)
+    idx = 0
+    print(f"Prime numb (first {limit}): ", end="")
+    for nb in prime_gen:
+        if idx < limit - 1:
+            print(f"{nb}, ", end="")
+        else:
+            print(f"{nb}")
+        idx += 1
+
+
+def ft_fibonacci(limit: int) -> Generator[int, None, None]:
+    nb1 = 0
+    nb2 = 1
+    while limit > 0:
+        yield (nb1)
+        nb1, nb2 = nb2, nb1 + nb2
+        limit -= 1
+
+
+def display_fibonnaci(limit: int) -> None:
+    fibo_gen = ft_fibonacci(limit)
+    idx = 0
+    print(f"Fibonacci sequence (first {limit}): ", end="")
+    for nb in fibo_gen:
+        if idx < limit - 1:
+            print(f"{nb}, ", end="")
+        else:
+            print(f"{nb}")
+        idx += 1
+
+
 def generator(limit: int) -> Generator[list, None, None]:
     """ Simulates a stream of game event data.
     Args:
@@ -96,3 +147,6 @@ def run_analytics(event: int) -> None:
 
 if __name__ == "__main__":
     run_analytics(1000)
+    print("\n=== Generator Demonstration ===")
+    display_fibonnaci(10)
+    display_prime(5)
