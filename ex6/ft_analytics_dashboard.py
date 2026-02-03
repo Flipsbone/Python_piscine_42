@@ -4,8 +4,6 @@ This module simulates a game analytics dashboard that processes player data
 and displays various statistics using comprehensions and combined analysis.
 """
 
-import random
-
 
 def display_combined_analysis(data: dict[str, any]) -> None:
     """Display combined analysis of player data.
@@ -15,31 +13,26 @@ def display_combined_analysis(data: dict[str, any]) -> None:
 
     print("\n=== Combined Analysis ===")
     total_players = len(data['players'])
-    global_achievements = set()
-    total_score_sum = 0
 
-    best_player_name = ""
-    best_score = -1
-    best_nb_achievements = 0
+    total_score_sum = sum(player['score'] for player
+                          in data['players'].values())
+    global_achievements = {
+        achiev
+        for player in data['players'].values()
+        for achiev in player['achievements']
+    }
+    stats_list = [
+        (player['score'], player_name, len(player['achievements']))
+        for player_name, player in data['players'].items()
+    ]
+    best_score, best_player_name, best_nb_achievements = max(stats_list)
 
-    for player_name in data['players']:
-        current_player_profil = data['players'][player_name]
-        score = current_player_profil['total_score']
-
-        total_score_sum += score
-        global_achievements.update(current_player_profil['achievement_event'])
-
-        if score > best_score:
-            best_score = score
-            best_player_name = player_name
-            best_nb_achievements = current_player_profil['achievement_event']
-
-        average_score = total_score_sum / total_players
+    average_score = total_score_sum / total_players
     print(f"Total players: {total_players}")
     print(f"Total unique achievements: {len(global_achievements)}")
     print(f"Average score: {average_score:.1f}")
     print(f"Top performer: {best_player_name} ({best_score} points, "
-          f"{len(best_nb_achievements)} achievements)")
+          f"{best_nb_achievements} achievements)")
 
 
 def display_dictionary_comprehension(data: dict[str, any]) -> None:
@@ -49,22 +42,27 @@ def display_dictionary_comprehension(data: dict[str, any]) -> None:
     """
 
     print("\n=== Dict Comprehension Examples ===")
-    dict_players_scores = {}
+    dict_players_scores = {
+        player_name: player_data['score']
+        for player_name, player_data in data['players'].items()
+    }
     dict_score_categories = {'high': 0, 'medium': 0, 'low': 0}
-    dict_achievement_counts = {}
+
+    dict_achievement_counts = {
+        player_name: len(player_data['achievements'])
+        for player_name, player_data in data['players'].items()
+    }
 
     for player_name in data['players']:
         current_player_profil = data['players'][player_name]
-        score_player = current_player_profil['total_score']
+        score_player = current_player_profil['score']
         if score_player >= 2000:
             dict_score_categories['high'] += 1
         elif score_player > 1000 and score_player < 2000:
             dict_score_categories['medium'] += 1
         else:
             dict_score_categories['low'] += 1
-        dict_players_scores[player_name] = score_player
-        count_achievement = current_player_profil['achievements_count']
-        dict_achievement_counts[player_name] = count_achievement
+
     print(f"Player scores: {dict_players_scores}")
     print(f"Score categories: {dict_score_categories}")
     print(f"Achievement counts: {dict_achievement_counts}")
@@ -77,24 +75,20 @@ def display_list_comprehension(data: dict[str, any]) -> None:
     """
 
     print("\n=== List Comprehension Examples ===")
-    list_top_scorers = []
-    list_scores_doubled = []
-    list_player = []
+    list_top_scorers = [
+        player_name for player_name, player_data in
+        data['players'].items() if player_data['score'] > 2000
+    ]
+    list_scores_doubled = [
+        player_data['score'] * 2 for player_data in data['players'].values()
+    ]
+    list_player = [
+        session['player'] for session in data['sessions']
+        if session['active']
+    ]
 
-    for player_name in data['players']:
-        current_player_profil = data['players'][player_name]
-        hight_score = current_player_profil['total_score']
-        double_score = current_player_profil['total_score'] * 2
-        if hight_score > 2000:
-            list_top_scorers.append(player_name)
-        list_scores_doubled.append(double_score)
     print(f"High scorers (>2000): {list_top_scorers}")
     print(f"Scores doubled: {list_scores_doubled}")
-
-    for session in data['sessions']:
-        if session['active']:
-            player_name = session['player']
-            list_player.append(player_name)
     print(f"Active players: {list_player}")
 
 
@@ -105,98 +99,50 @@ def display_set_comprehension(data: dict[str, any]) -> None:
     """
 
     print("\n=== Set Comprehension Examples ===")
-    unique_players = set()
-    unique_achievements = set()
-    active_regions = set()
+    unique_players = {session['player'] for session in data['sessions']}
+    active_regions = {session['region'] for session in data['sessions']}
+    unique_achievements = {
+        achiev
+        for player_data in data['players'].values()
+        for achiev in player_data['achievements']
+    }
 
-    for session in data['sessions']:
-        unique_players.add(session['player'])
-        player_name = session['player']
-        current_player_profil = data['players'][player_name]
-        unique_achievements.update(current_player_profil['achievement_event'])
-        active_regions.add(current_player_profil['region'])
     print(f"Unique players: {unique_players}")
     print(f"Unique achievements: {unique_achievements}")
     print(f"Active regions: {active_regions}")
 
 
-def assigned_random_value(
-        players: set, achievements: set,
-        game_mode: set, region: set) -> dict[str, any]:
-    """Assign random values to players and generate session data.
-    Args:
-        players (set): Set of player names.
-        achievements (set): Set of achievement names.
-        game_mode (set): Set of game modes.
-        region (set): Set of regions.
-    Returns:
-        dict: A dictionary containing player profiles and session data.
-    """
-
-    players_list = list(players)
-    game_mode_list = list(game_mode)
-    achievements_list = list(achievements)
-    region_list = list(region)
-
-    # Player statistics
-    players_data = {}
-    for player in players:
-        nb_achievement = random.randint(1, len(achievements))
-        name_achivements = random.sample(achievements_list, k=nb_achievement)
-        players_data[player] = {
-            'level': random.randint(1, 50),
-            'total_score': random.randint(10, 3000),
-            'sessions_played': random.randint(10, 100),
-            'favorite_mode': random.choice(game_mode_list),
-            'achievements_count': nb_achievement,
-            'achievement_event': name_achivements,
-            'region': random.choice(region_list)
-        }
-
-    # Session data for comprehensions
-    sessions = [
-        {
-            'player': random.choice(players_list),
-            'duration_minutes': random.randint(5, 120),
-            'mode': random.choice(game_mode_list),
-            'active': random.choice([True, False])
-        }
-        for _ in range(5)
-    ]
-
-    return {
-        'players': players_data,
-        'sessions': sessions,
-        'game_modes': [game_mode_list],
-        'achievements': achievements
-    }
-
-
-def game_management() -> dict[str, any]:
-    """Manage game data generation.
+def get_game_data() -> dict:
+    """Generate game data for players and sessions.
     Returns:
         dict: The generated game data.
     """
 
-    players = {'alice', 'bob', 'charlie', 'diana', 'eve', 'frank'}
-    achievements = {
-                    "first_kill", "level_10", "level_50", "level_100",
-                    "speedrun", "explorer", "treasure_hunter", "boss_slayer",
-                    "collector", "perfectionist", "social_butterfly",
-                    "lone_wolf", "strategist", "berserker", "pacifist",
-                    "completionist"}
-    game_modes = {'casual', 'competitive', 'ranked'}
-    region = {"north", "south", "east", "west", "central"}
+    players_data = {
+        'alice': {'score': 2300,
+                  'achievements': {'first_kill', 'level_10', 'boss_slayer'},
+                  'level': 25},
+        'bob': {'score': 1800, 'achievements': {'boss_slayer'}, 'level': 12},
+        'charlie': {'score': 2150, 'achievements': {'level_10', 'collector'},
+                    'level': 20},
+        'diana': {'score': 2050, 'achievements': {'speedrun', 'no_damage'},
+                  'level': 30}
+    }
 
-    data = assigned_random_value(players, achievements, game_modes, region)
-    return data
+    sessions = [
+        {'player': 'alice', 'region': 'north', 'active': True},
+        {'player': 'bob', 'region': 'east', 'active': False},
+        {'player': 'charlie', 'region': 'north', 'active': True},
+        {'player': 'diana', 'region': 'west', 'active': True}
+    ]
+    return {'players': players_data, 'sessions': sessions}
 
 
 def main() -> None:
     """Main function to run the game analytics dashboard."""
 
     print("=== Game Analytics Dashboard ===")
-    data = game_management()
+    data = get_game_data()
     display_list_comprehension(data)
     display_dictionary_comprehension(data)
     display_set_comprehension(data)
