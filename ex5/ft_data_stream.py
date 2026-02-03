@@ -7,6 +7,13 @@ from typing import Generator
 
 
 def ft_prime(limit: int) -> Generator[int, None, None]:
+    """ Generate prime numbers up to a specified limit.
+    Args:
+        limit (int): Number of prime numbers to generate.
+    Yields:
+        int: The next prime number in the sequence.
+    """
+
     count = 0
     nb = 2
     div = 2
@@ -25,6 +32,11 @@ def ft_prime(limit: int) -> Generator[int, None, None]:
 
 
 def display_prime(limit: int) -> None:
+    """ Display prime numbers up to a specified limit.
+    Args:
+        limit (int): Number of prime numbers to display.
+    """
+
     prime_gen = ft_prime(limit)
     idx = 0
     print(f"Prime numb (first {limit}): ", end="")
@@ -37,6 +49,13 @@ def display_prime(limit: int) -> None:
 
 
 def ft_fibonacci(limit: int) -> Generator[int, None, None]:
+    """ Generate Fibonacci numbers up to a specified limit.
+    Args:
+        limit (int): Number of Fibonacci numbers to generate.
+    Yields:
+        int: The next Fibonacci number in the sequence.
+    """
+
     nb1 = 0
     nb2 = 1
     while limit > 0:
@@ -46,6 +65,11 @@ def ft_fibonacci(limit: int) -> Generator[int, None, None]:
 
 
 def display_fibonnaci(limit: int) -> None:
+    """ Display Fibonacci numbers up to a specified limit.
+    Args:
+        limit (int): Number of Fibonacci numbers to display.
+    """
+
     fibo_gen = ft_fibonacci(limit)
     idx = 0
     print(f"Fibonacci sequence (first {limit}): ", end="")
