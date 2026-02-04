@@ -53,15 +53,12 @@ def display_dictionary_comprehension(data: dict[str, any]) -> None:
         for player_name, player_data in data['players'].items()
     }
 
-    for player_name in data['players']:
-        current_player_profil = data['players'][player_name]
-        score_player = current_player_profil['score']
-        if score_player >= 2000:
-            dict_score_categories['high'] += 1
-        elif score_player > 1000 and score_player < 2000:
-            dict_score_categories['medium'] += 1
-        else:
-            dict_score_categories['low'] += 1
+    scores = [player['score'] for player in data['players'].values()]
+    dict_score_categories = {
+        'height': sum(1 for score in scores if score >= 2000),
+        'medium': sum(1 for score in scores if score > 1000 and score < 2000),
+        'low': sum(1 for score in scores if score <= 1000)
+    }
 
     print(f"Player scores: {dict_players_scores}")
     print(f"Score categories: {dict_score_categories}")
