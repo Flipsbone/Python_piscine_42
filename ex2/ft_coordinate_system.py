@@ -54,7 +54,8 @@ if __name__ == "__main__":
             position_3.append(int(cordonnate))
     except ValueError as e:
         print(f"Error parsing coordinates: {e}")
-        print(f"Error details - Type: {type(e).__name__}, Args: {e.args}\n")
+        print(f"Error details - Type: {e.__class__.__name__},"
+              f"Args: {e.args}\n")
 
     print("Unpacking demonstration:")
     X, Y, Z = tuple_position_2
