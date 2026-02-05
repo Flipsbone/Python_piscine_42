@@ -25,7 +25,7 @@ def display_combined_analysis(data: dict[str, any]) -> None:
         (player['score'], player_name, len(player['achievements']))
         for player_name, player in data['players'].items()
     ]
-    best_score, best_player_name, best_nb_achievements = max(stats_list)
+    best_score, best_nb_achievements, best_player_name = max(stats_list)
 
     average_score = total_score_sum / total_players
     print(f"Total players: {total_players}")
