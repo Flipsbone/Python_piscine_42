@@ -1,4 +1,13 @@
-import sys
+try:
+    import sys
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import requests
+    import numpy as np
+    DEPENDENCIES_INSTALLED = True
+except ImportError as e:
+    DEPENDENCIES_INSTALLED = False
+    missing_module = str(e).split("'")[1] if "'" in str(e) else "required libraries"
 
 def run_analysis() -> None:
     url = "https://data.ademe.fr/data-fair/api/v1/datasets/liste-des-entreprises-rge-2/lines"
@@ -60,26 +69,21 @@ def run_analysis() -> None:
     except Exception as e:
         print(f"Error during execution: {e}")
         
-def try_import_package()-> None:
-    try:
-        import pandas as pd
-        import matplotlib.pyplot as plt
+def check_dependencies()-> None:
+    if not DEPENDENCIES_INSTALLED:
+        print(f"\n[ERROR] Missing dependency: {missing_module}")
+        print("Please install requirements: pip install -r requierement")
+        sys.exit(1)
+
         print(f"[OK] pandas ({pd.__version__}) - Data manipulation ready")
-        import requests
         print(f"[OK] requests ({requests.__version__}) - Network access ready")
         print(f"[OK] matplotlib ({plt.matplotlib.__version__}) - Visualization ready")
-        import numpy as np
         print(f"[OK] numpy ({np.__version__}) - Numerical computation ready")
-
-    except ImportError as e:
-        print(f"[ERROR] Missing dependency: {e}")
-        print("Please install requirements using pip or poetry.")
-        sys.exit(1)
 
 def main() -> None:
     print("LOADING STATUS: Loading programs...\n")
     print("Checking dependencies:")
-    try_import_package()
+    check_dependencies()
     run_analysis()
 
 if __name__ == "__main__":
