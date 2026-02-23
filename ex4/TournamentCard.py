@@ -15,7 +15,7 @@ class TournamentCard(Card, Combatable, Rankable):
             self.attack_value = Card.validate_data(attack)
         except (TypeError, ValueError) as e:
             print(f"Invalid attack : {e}. Using defaults attack = 0 ")
-            self.attack = 0
+            self.attack_value = 0
         try:
             self.health_point = Card.validate_data_health(health)
         except (TypeError, ValueError) as e:
