@@ -37,8 +37,8 @@ def run_analysis() -> None:
         "datasets/liste-des-entreprises-rge-2/lines"
         )
 
-    params = {
-        "q": '"Pompe à chaleur"',
+    filter = {
+        "query": '"Pompe à chaleur"',
         "size": 10000,
         "select": "code_postal"
     }
@@ -47,8 +47,10 @@ def run_analysis() -> None:
         print("Analyzing Matrix data...")
         print("Processing 10000 data points...")
 
-        response = requests.get(url, params=params, timeout=20)
+        response = requests.get(url, params=filter, timeout=20)
         response.raise_for_status()
+        line = response.text
+        print(f"{line}")
         data = response.json().get('results', [])
 
         if not data:
