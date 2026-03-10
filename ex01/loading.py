@@ -1,7 +1,8 @@
 import sys
 import importlib
 
-def check_dependencies()-> None:
+
+def check_dependencies() -> None:
     dependencies = {
         "pandas": "Data manipulation ready",
         "requests": "Network access ready",
@@ -20,8 +21,10 @@ def check_dependencies()-> None:
             all_ok = False
 
     if not all_ok:
-        print("\n[ERROR] Missing dependencies. Please install requirements: pip install -r requirements.txt")
+        print("\n[ERROR] Missing dependencies."
+              "Please install requirements: pip install -r requirements.txt")
         sys.exit(1)
+
 
 def run_analysis() -> None:
     import pandas as pd
@@ -29,7 +32,10 @@ def run_analysis() -> None:
     import numpy as np
     import requests
 
-    url = "https://data.ademe.fr/data-fair/api/v1/datasets/liste-des-entreprises-rge-2/lines"
+    url = (
+        "https://data.ademe.fr/data-fair/api/v1/"
+        "datasets/liste-des-entreprises-rge-2/lines"
+        )
 
     params = {
         "q": '"Pompe à chaleur"',
@@ -64,30 +70,35 @@ def run_analysis() -> None:
 
         plt.figure(figsize=(12, 8))
         df_plot = df_final.head(20)
-        
+
         colors = plt.cm.plasma(np.linspace(0.2, 0.8, len(df_plot)))
-        
-        bars = plt.barh(df_plot['Departement'], df_plot['Nombre'], color=colors, edgecolor='white')
+
+        bars = plt.barh(df_plot['Departement'],
+                        df_plot['Nombre'],
+                        color=colors,
+                        edgecolor='white')
         plt.gca().invert_yaxis()
-        
-        plt.title('Distribution of RGE-Certified Heat Pump Installers by Department (10k Sample)', fontsize=14)
+
+        plt.title(
+            'Distribution of RGE-Certified'
+            'Heat Pump Installers by Department (10k Sample)', fontsize=14)
         plt.xlabel('Number of Companies')
         plt.ylabel('Department (Code)')
 
         for bar in bars:
-            plt.text(bar.get_width() + 5, bar.get_y() + bar.get_height()/2, 
+            plt.text(bar.get_width() + 5, bar.get_y() + bar.get_height()/2,
                      int(bar.get_width()), va='center', fontweight='bold')
 
         plt.grid(axis='x', linestyle='--', alpha=0.3)
         plt.tight_layout()
         plt.savefig("matrix_analysis.png")
-        
+
         print("\nAnalysis complete!")
-        print(f"Results saved to: matrix_analysis.png")
+        print("Results saved to: matrix_analysis.png")
 
     except Exception as e:
         print(f"Error during execution: {e}")
-        
+
 
 def main() -> None:
     print("LOADING STATUS: Loading programs...\n")
@@ -95,6 +106,7 @@ def main() -> None:
     check_dependencies()
     print()
     run_analysis()
+
 
 if __name__ == "__main__":
     main()
