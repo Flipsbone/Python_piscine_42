@@ -1,6 +1,27 @@
 import os
 import sys
-from dotenv import load_dotenv
+import importlib
+
+
+def check_dependencies() -> None:
+    dependencies = {
+        "dotenv": "Environment configuration ready",
+    }
+    all_ok = True
+
+    for name, description in dependencies.items():
+        try:
+            module = importlib.import_module(name)
+            version = getattr(module, "__version__", "unknown")
+            print(f"[OK] {name} ({version}) - {description}")
+        except ImportError:
+            print(f"[ERROR] Missing dependency: {name}")
+            all_ok = False
+
+    if not all_ok:
+        print("\n[ERROR] Missing dependencies."
+              "Run this exact command: pip install python-dotenv")
+        sys.exit(1)
 
 
 def display_config(my_config: dict[str, str]) -> None:
@@ -42,14 +63,19 @@ def load_config() -> dict[str, str]:
 
 
 def main() -> None:
+    check_dependencies()
+    from dotenv import load_dotenv
     if len(sys.argv) != 2:
-        sys.exit("Usage: python oracle.py .env")
+        sys.exit("\nUsage: python oracle.py .env")
 
     env_path = sys.argv[1]
     print("ORACLE STATUS: Reading the Matrix...\n")
 
-    if not load_dotenv(env_path):
-        print(f"Should load configuration from {env_path} file")
+    try:
+        if not load_dotenv(env_path):
+            print(f"Should load configuration from {env_path} file")
+    except OSError as e:
+        sys.exit(f"[ERROR] While accessing '{env_path}': {e}")
 
     my_config: dict[str, str] = load_config()
     print("Configuration loaded!")

@@ -49,8 +49,6 @@ def run_analysis() -> None:
 
         response = requests.get(url, params=filter, timeout=20)
         response.raise_for_status()
-        line = response.text
-        print(f"{line}")
         data = response.json().get('results', [])
 
         if not data:
