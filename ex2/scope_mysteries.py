@@ -9,8 +9,15 @@ def mage_counter() -> callable:
 
 
 def spell_accumulator(initial_power: int) -> callable:
+    if not isinstance(initial_power, (int, float)):
+        raise TypeError("Initial power must be a number.")
+
     def inner_spell_accumulator(power_add: int) -> int:
         nonlocal initial_power
+
+        if not isinstance(power_add, (int, float)):
+            raise TypeError(f"Cannot add {type(power_add).__name__} to power.")
+
         initial_power += power_add
         return initial_power
     return inner_spell_accumulator
@@ -34,29 +41,31 @@ def memory_vault() -> dict[str, callable]:
 
 
 def main() -> None:
-    result_mage = mage_counter()
-    for i in range(1, 4):
-        print(f"call {i} : {result_mage()}")
-    print()
+    try:
+        result_mage = mage_counter()
+        for i in range(1, 4):
+            print(f"call {i} : {result_mage()}")
+        print()
 
-    result_accumulator = spell_accumulator(5)
-    for i in range(1, 4):
-        print(f"Power increased {result_accumulator(10)}")
-    print()
+        result_accumulator = spell_accumulator(5)
+        for i in range(1, 4):
+            print(f"Power increased {result_accumulator(10)}")
+        print()
 
-    enchentment = enchantment_factory("Flaming")
-    print(f"{enchentment("Sword")}")
-    enchantment_2 = enchantment_factory("Frozen")
-    print(f"{enchantment_2("Shield")}")
-    print()
+        enchentment = enchantment_factory("Flaming")
+        print(f"{enchentment("Sword")}")
+        enchantment_2 = enchantment_factory("Frozen")
+        print(f"{enchantment_2("Shield")}")
+        print()
 
-    my_vault = memory_vault()
-    my_vault['store']("counter", mage_counter)
-    result_counter = my_vault['recall']("counter")
-    result2_mage = result_counter()
-    for i in range(1, 4):
-        print(f"vault call {i} : {result2_mage()}")
-
+        my_vault = memory_vault()
+        my_vault['store']("counter", mage_counter)
+        result_counter = my_vault['recall']("counter")
+        result2_mage = result_counter()
+        for i in range(1, 4):
+            print(f"vault call {i} : {result2_mage()}")
+    except Exception as e:
+        print(f"faillure {e}")
 
 if __name__ == "__main__":
     main()
