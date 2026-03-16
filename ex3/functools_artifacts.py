@@ -1,9 +1,10 @@
 import functools
 import operator
+from typing import Any, Callable
 
 
 def spell_reducer(spells: list[int], operation: str) -> int:
-    operations_dict = {
+    operations_dict: dict[str, Callable[[Any, Any], Any]] = {
         "add": operator.add,
         "multiply": operator.mul,
         "max": max,
@@ -20,7 +21,7 @@ def spell_reducer(spells: list[int], operation: str) -> int:
         raise TypeError("The spell list must contain only numbers.")
 
 
-def partial_enchanter(base_enchantment: callable) -> dict[str, callable]:
+def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
     return ({
         "fire_enchant": functools.partial(
             base_enchantment, 50, "Fire"),
@@ -46,20 +47,23 @@ def memoized_fibonacci(n: int) -> int:
     return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
-def spell_dispatcher() -> callable:
+def spell_dispatcher() -> Callable[[Any], str]:
 
-    def base_dispatcher(spell):
+    def base_dispatcher(spell: Any) -> str:
         return f"Unknown spell type: {type(spell).__name__}"
     dispatcher = functools.singledispatch(base_dispatcher)
 
-    def int_spell(damage):
+    def int_spell(damage: int) -> str:
         return f"Casting Damage Spell: {damage} HP dealt!"
 
-    def str_spell(enchantment):
+    def str_spell(enchantment: str) -> str:
         return f"Applying Enchantment: {enchantment}!"
 
-    def list_spell(multi_cast):
-        return f"Multi-casting {len(multi_cast)} spells: {', '.join(map(str, multi_cast))}"
+    def list_spell(multi_cast: list[Any]) -> str:
+        return (
+            f"Multi-casting {len(multi_cast)}"
+            f"spells: {', '.join(map(str, multi_cast))}"
+            )
 
     dispatcher.register(int, int_spell)
     dispatcher.register(str, str_spell)

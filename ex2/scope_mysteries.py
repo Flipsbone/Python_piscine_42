@@ -1,4 +1,7 @@
-def mage_counter() -> callable:
+from typing import Callable
+
+
+def mage_counter() -> Callable:
     call = 0
 
     def inner_mage_counter() -> int:
@@ -8,7 +11,7 @@ def mage_counter() -> callable:
     return inner_mage_counter
 
 
-def spell_accumulator(initial_power: int) -> callable:
+def spell_accumulator(initial_power: int) -> Callable:
     if not isinstance(initial_power, (int, float)):
         raise TypeError("Initial power must be a number.")
 
@@ -23,19 +26,19 @@ def spell_accumulator(initial_power: int) -> callable:
     return inner_spell_accumulator
 
 
-def enchantment_factory(enchantment_type: str) -> callable:
+def enchantment_factory(enchantment_type: str) -> Callable:
     def inner_enchantment_factory(item_name: str) -> str:
         return f"{enchantment_type} {item_name}"
     return inner_enchantment_factory
 
 
-def memory_vault() -> dict[str, callable]:
-    vault_storage = {}
+def memory_vault() -> dict[str, Callable]:
+    vault_storage: dict[str, str] = {}
 
-    def store(key: str, value: callable) -> None:
+    def store(key: str, value: str) -> None:
         vault_storage[key] = value
 
-    def recall(key: str):
+    def recall(key: str) -> str:
         return vault_storage.get(key, "Memory not found")
     return {"store": store, "recall": recall}
 
@@ -66,6 +69,7 @@ def main() -> None:
             print(f"vault call {i} : {result2_mage()}")
     except Exception as e:
         print(f"faillure {e}")
+
 
 if __name__ == "__main__":
     main()
