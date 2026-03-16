@@ -95,7 +95,7 @@ def valid_data() -> None:
         print(f"Unexpected error: {e}")
 
 
-def main():
+def main() -> None:
     print("Alien Contact Log Validation\n")
     valid_data()
     wrong_data()

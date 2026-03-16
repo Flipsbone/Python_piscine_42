@@ -138,7 +138,7 @@ def get_crew() -> list[CrewMember]:
     return [captain, officier, cadet]
 
 
-def main():
+def main() -> None:
     print("Space Mission Crew Validation\n")
     my_crew = get_crew()
     valid_data(my_crew)
