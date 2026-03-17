@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Any
 
 
 def mage_counter() -> Callable:
@@ -33,12 +33,12 @@ def enchantment_factory(enchantment_type: str) -> Callable:
 
 
 def memory_vault() -> dict[str, Callable]:
-    vault_storage: dict[str, str] = {}
+    vault_storage: dict[str, Any] = {}
 
-    def store(key: str, value: str) -> None:
+    def store(key: str, value: Any) -> None:
         vault_storage[key] = value
 
-    def recall(key: str) -> str:
+    def recall(key: str) -> Any:
         return vault_storage.get(key, "Memory not found")
     return {"store": store, "recall": recall}
 

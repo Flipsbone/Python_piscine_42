@@ -53,7 +53,7 @@ class MageGuild:
             return False
         return all(char.isalpha() or char.isspace() for char in name)
 
-    @power_validator(min_power=6)
+    @power_validator(min_power=10)
     def cast_spell(self, spell_name: str, power: int) -> str:
         return f"Successfully cast {spell_name} with power {power}"
 

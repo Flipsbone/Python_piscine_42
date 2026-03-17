@@ -1,4 +1,3 @@
-
 def artifact_sorter(artifacts: list[dict]) -> list[dict]:
     try:
         return sorted(
@@ -6,21 +5,24 @@ def artifact_sorter(artifacts: list[dict]) -> list[dict]:
             key=lambda artifact: artifact['power'],
             reverse=True
             )
-    except Exception:
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
         return []
 
 
 def power_filter(mages: list[dict], min_power: int) -> list[dict]:
     try:
         return list(filter(lambda mage: mage['power'] >= min_power, mages))
-    except Exception:
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
         return []
 
 
 def spell_transformer(spells: list[str]) -> list[str]:
     try:
         return list(map(lambda spell: f"* {spell} *", spells))
-    except Exception:
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
         return []
 
 
@@ -40,44 +42,47 @@ def mage_stats(mages: list[dict]) -> dict:
 
 
 def data_mage() -> None:
+    print("Testing data mage...")
     mages = [{'name': 'Morgan', 'power': 56, 'element': 'shadow'},
              {'name': 'Alex', 'power': 62, 'element': 'fire'},
              {'name': 'Phoenix', 'power': 51, 'element': 'shadow'},
              {'name': 'Kai', 'power': 92, 'element': 'shadow'},
              {'name': 'Morgan', 'power': 78, 'element': 'shadow'}]
-    print("Testing data mage...")
     mages_filter = mage_stats(mages)
     print(mages_filter)
 
 
 def data_spell() -> None:
+    print("Testing change spell...")
     spells = ['flash', 'heal', 'tornado', 'blizzard']
     change_spell = spell_transformer(spells)
-    print("Testing change spell...")
     print(change_spell)
     print()
 
 
 def data_power() -> None:
+    print("Testing mages filter...")
     mages = [{'name': 'Morgan', 'power': 56, 'element': 'shadow'},
              {'name': 'Alex', 'power': 62, 'element': 'fire'},
              {'name': 'Phoenix', 'power': 51, 'element': 'shadow'},
              {'name': 'Kai', 'power': 92, 'element': 'shadow'},
              {'name': 'Morgan', 'power': 78, 'element': 'shadow'}]
     mages_filter = power_filter(mages, 80)
-    print("Testing mages filter...")
     print(mages_filter)
     print()
 
 
 def data_artifacts() -> None:
+    print("Testing artifact sorter...")
     artifacts = [{'name': 'Storm Crown', 'power': 119, 'type': 'focus'},
                  {'name': 'Storm Crown', 'power': 88, 'type': 'focus'},
                  {'name': 'Fire Staff', 'power': 91, 'type': 'relic'},
                  {'name': 'Wind Cloak', 'power': 100, 'type': 'focus'}]
     sort_artifacts = artifact_sorter(artifacts)
-    print("Testing artifact sorter...")
-    print(sort_artifacts)
+    print(f"{sort_artifacts[0]['name']} ({sort_artifacts[0]['power']} power) "
+          "comes before "
+          f"{sort_artifacts[1]['name']} ({sort_artifacts[1]['power']} power)"
+          )
     print()
 
 
