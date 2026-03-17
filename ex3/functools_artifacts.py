@@ -37,14 +37,14 @@ def simple_enchant(power: int, element: str, target: str) -> str:
 
 
 @functools.lru_cache(maxsize=None)
-def memoized_fibonacci(number: int) -> int:
-    if not isinstance(number, int):
-        raise TypeError(f"Fibonacci param `{number}` must be an integer.")
-    if number <= 0:
+def memoized_fibonacci(n: int) -> int:
+    if not isinstance(n, int):
+        raise TypeError(f"Fibonacci param `{n}` must be an integer.")
+    if n <= 0:
         return 0
-    if number == 1:
+    if n == 1:
         return 1
-    return memoized_fibonacci(number - 1) + memoized_fibonacci(number - 2)
+    return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
 def spell_dispatcher() -> Callable[[Any], str]:
