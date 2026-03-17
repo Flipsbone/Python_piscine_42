@@ -4,7 +4,7 @@ from typing import Any, Callable
 
 
 def spell_reducer(spells: list[int], operation: str) -> int:
-    operations_dict: dict[str, Callable[[Any, Any], Any]] = {
+    operations_dict: dict[str, Callable] = {
         "add": operator.add,
         "multiply": operator.mul,
         "max": max,
@@ -40,14 +40,16 @@ def simple_enchant(power: int, element: str, target: str) -> str:
 def memoized_fibonacci(n: int) -> int:
     if not isinstance(n, int):
         raise TypeError(f"Fibonacci param `{n}` must be an integer.")
-    if n <= 0:
+    if n < 0:
+        raise ValueError("Fibonacci does not accept negative numbers.")
+    if n == 0:
         return 0
     if n == 1:
         return 1
     return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
-def spell_dispatcher() -> Callable[[Any], str]:
+def spell_dispatcher() -> Callable:
 
     def base_dispatcher(spell: Any) -> str:
         return f"Unknown spell type: {type(spell).__name__}"
@@ -62,7 +64,7 @@ def spell_dispatcher() -> Callable[[Any], str]:
     def list_spell(multi_cast: list[Any]) -> str:
         return (
             f"Multi-casting {len(multi_cast)}"
-            f"spells: {', '.join(map(str, multi_cast))}"
+            f" spells: {', '.join(map(str, multi_cast))}"
             )
 
     dispatcher.register(int, int_spell)
