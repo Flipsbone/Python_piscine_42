@@ -81,9 +81,9 @@ def conditional() -> None:
 
 def power() -> None:
     print("Testing power amplifier...")
-    my_amplified_power = power_amplifier(basic_damage, 3)
+    mega_fireball = power_amplifier(basic_damage, 3)
     orignial = basic_damage()
-    amplified_damage = my_amplified_power()
+    amplified_damage = mega_fireball()
     print(f"original : {orignial} amplificateur : {amplified_damage}")
     print()
 
