@@ -8,13 +8,15 @@ def spell_timer(func: Callable) -> Callable:
     @wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         print(f"Casting {func.__name__}...")
-
         start_time = time.perf_counter()
-        result = func(*args, **kwargs)
-        end_time = time.perf_counter()
-        duration = end_time - start_time
-
-        print(f"Spell completed in {duration:.4f} seconds")
+        try:
+            result = func(*args, **kwargs)
+        except Exception as e:
+            result = f"Spell fizzled out! Error: {e}"
+        finally:
+            end_time = time.perf_counter()
+            duration = end_time - start_time
+            print(f"Spell completed in {duration:.4f} seconds")
         return result
     return wrapper
 
@@ -23,11 +25,17 @@ def power_validator(min_power: int) -> Callable:
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
-            validation_power = next(filter(lambda x: isinstance(x, int), args),
-                                    kwargs.get('power'))
-            if validation_power is not None and validation_power < min_power:
-                return "Insufficient power for this spell"
-            return func(*args, **kwargs)
+            try:
+                validation_power = next(
+                    filter(lambda x: isinstance(x, int), args),
+                    kwargs.get('power'))
+                if validation_power is not None and (
+                    validation_power < min_power
+                        ):
+                    return "Insufficient power for this spell"
+                return func(*args, **kwargs)
+            except Exception as e:
+                return f"Power validation failed: {e}"
         return wrapper
     return decorator
 
@@ -49,7 +57,10 @@ def retry_spell(max_attempts: int) -> Callable:
 class MageGuild:
     @staticmethod
     def validate_mage_name(name: str) -> bool:
-        if len(name) < 3:
+        try:
+            if len(name) < 3:
+                return False
+        except TypeError:
             return False
         return all(char.isalpha() or char.isspace() for char in name)
 
@@ -64,17 +75,41 @@ def main() -> None:
         time.sleep(0.1)
         return "Fireball cast!"
 
+    @spell_timer
+    def advanced_attack(spell_name: str, power: int, element: str) -> str:
+        time.sleep(0.1)
+        return f"Cast {spell_name} with {power} {element} power!"
+
     print("Testing spell timer...")
     result = fireball()
     print(f"Result: {result}")
-    print("\nTesting MageGuild...")
 
+    print("\nTesting spell timer with *args (Positional)")
+    result_args = advanced_attack("Ice Spike", 20, "Ice")
+    print(f"Result: {result_args}")
+
+    print("\nTesting spell timer with **kwargs (Keyword)")
+    result_kwargs = advanced_attack(
+        spell_name="Meteor", power=99, element="Fire"
+        )
+    print(f"Result: {result_kwargs}")
+
+    print("\nTesting MageGuild...")
     guild = MageGuild()
     print(MageGuild.validate_mage_name("Merlin"))
-    print(MageGuild.validate_mage_name("Me"))
+    print(MageGuild.validate_mage_name("Me3"))
 
     print(guild.cast_spell("Lightning", 15))
     print(guild.cast_spell("ice", 5))
+
+    print("\nTesting Retry_Spell")
+
+    @retry_spell(max_attempts=3)
+    def unstable_spell() -> None:
+        raise ValueError("The magical energy is too unstable!")
+
+    retry_result = unstable_spell()
+    print(f"Final Result: {retry_result}")
 
 
 if __name__ == "__main__":
