@@ -56,9 +56,9 @@ def main() -> None:
         print()
 
         enchentment = enchantment_factory("Flaming")
-        print(f"{enchentment("Sword")}")
+        print(f"{enchentment('Sword')}")
         enchantment_2 = enchantment_factory("Frozen")
-        print(f"{enchantment_2("Shield")}")
+        print(f"{enchantment_2('Shield')}")
         print()
 
         my_vault = memory_vault()
