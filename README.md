@@ -7,3 +7,4 @@ M3_python : Using data structures—lists , tuples , sets , dictionaries , memor
 M4_python : Demonstrating secure file operations, standard I/O stream management, and robust exception handling.
 M5_python : learning how to build adaptable software systems by controlling class behaviors through : Inheritance, Polymorphism, Abstract Classes, Duck Typing, and Protocols.
 M6_python : How to structure professional packages using __init__.py, navigate absolute and relative pathways, and safely resolve circular dependencies.
+M7_python : Building a modular trading card game engine that leverages abstract base classes, multiple inheritance
